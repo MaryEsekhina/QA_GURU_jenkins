@@ -9,6 +9,8 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
+
 
 public class FormTest {
     RegistrationPage registrationPage = new RegistrationPage();
@@ -25,8 +27,6 @@ public class FormTest {
     String address = faker.address().fullAddress();
     String state = "Haryana";
     String city = "Karnal";
-
-
 
 
     @BeforeAll
@@ -47,23 +47,23 @@ public class FormTest {
     @Test
     void nameFillTest() {
 
-        registrationPage.openPage(); //перешли по ссылке
-        registrationPage.enterFirstName(name)
+        step("Открываем github.com", () -> registrationPage.openPage()); //перешли по ссылке
+        step("Вводим основную информацию", () -> registrationPage.enterFirstName(name)
                 .enterLastName(surname)
                 .enterEmail(email)
                 .enterPhoneNumber(phone)
                 .chooseGender(gender)
-                .setBirthDate("19", "July", "1990")
-                .chooseSubj(subj)
-                .chooseHobby(hobby)
-                .loadPic(picPath)
-                .enterAddress(address)
+                .setBirthDate("19", "July", "1990"));
+        step("Выбираем предмет и хобби", () -> registrationPage.chooseSubj(subj)
+                .chooseHobby(hobby));
+        step("Загружаем картинку", () -> registrationPage.loadPic(picPath));
+        step("Вводим адрес", () -> registrationPage.enterAddress(address)
                 .chooseState(state)
-                .chooseCity(city)
-                .submit();
+                .chooseCity(city));
+        step("Нажимаем Submit", () -> registrationPage.submit());
 
         //проверка
-        registrationPage.checkResultsTitle();
+        step("Нажимаем Submit", () -> {registrationPage.checkResultsTitle();
         registrationPage.checkResultsValue(name + " " + surname);
         registrationPage.checkResultsValue(email);
         registrationPage.checkResultsValue(phone);
@@ -71,6 +71,6 @@ public class FormTest {
         registrationPage.checkResultsValue(subj);
         registrationPage.checkResultsValue("wat.jpeg");
         registrationPage.checkResultsValue(address);
-        registrationPage.checkResultsValue(state + " " + city);
+        registrationPage.checkResultsValue(state + " " + city);});
     }
 }
