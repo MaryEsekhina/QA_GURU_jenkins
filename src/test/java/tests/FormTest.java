@@ -50,6 +50,7 @@ public class FormTest {
         Attach.screenshotAs("Скриншот");
         Attach.pageSource();
         Attach.browserConsoleLogs();
+        Attach.addVideo();
 
     }
 
