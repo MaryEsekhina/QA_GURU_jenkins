@@ -46,7 +46,7 @@ public class FormTest {
 
     }
     @AfterEach
-    static void tearDown (){
+    void tearDown (){
         Attach.screenshotAs("Скриншот");
         Attach.pageSource();
         Attach.browserConsoleLogs();
