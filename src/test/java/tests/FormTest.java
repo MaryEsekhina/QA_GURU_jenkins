@@ -2,7 +2,9 @@ package tests;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
+import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import pages.RegistrationPage;
 import com.codeborne.selenide.Configuration;
@@ -43,9 +45,16 @@ public class FormTest {
         Configuration.startMaximized = true;
 
     }
+    @AfterEach
+    static void tearDown (){
+        Attach.screenshotAs("Скриншот");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+
+    }
 
     @Test
-    void nameFillTest() {
+     void nameFillTest() {
 
         step("Открываем github.com", () -> registrationPage.openPage()); //перешли по ссылке
         step("Вводим основную информацию", () -> registrationPage.enterFirstName(name)
