@@ -1,20 +1,22 @@
 package tests;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
-import helpers.Attach;
+import config.CredentialsConfig;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.AfterEach;
+import org.aeonbits.owner.ConfigFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import pages.RegistrationPage;
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
+import static java.lang.String.format;
 
 
-public class FormTest {
+public class FormTest  {
     RegistrationPage registrationPage = new RegistrationPage();
 
     Faker faker = new Faker();
@@ -30,7 +32,6 @@ public class FormTest {
     String state = "Haryana";
     String city = "Karnal";
 
-
     @BeforeAll
     static void setup() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
@@ -39,23 +40,18 @@ public class FormTest {
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", true);
 
+        CredentialsConfig credentials = ConfigFactory.create(CredentialsConfig.class);
+        String login = credentials.login();
+        String password = credentials.password();
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
+        Configuration.remote = format("https://%s:%s@selenoid.autotests.cloud/wd/hub/",login, password);
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.startMaximized = true;
 
     }
-    @AfterEach
-    void tearDown (){
-        Attach.screenshotAs("Скриншот");
-        Attach.pageSource();
-        Attach.browserConsoleLogs();
-        Attach.addVideo();
-
-    }
 
     @Test
-     void nameFillTest() {
+     void nameFillTest(){
 
         step("Открываем github.com", () -> registrationPage.openPage()); //перешли по ссылке
         step("Вводим основную информацию", () -> registrationPage.enterFirstName(name)
