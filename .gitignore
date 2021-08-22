@@ -19,7 +19,6 @@
 *.tar.gz
 *.rar
 *.iml
-
 # Project gen files
 .idea
 .allure/

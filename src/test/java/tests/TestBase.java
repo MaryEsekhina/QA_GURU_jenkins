@@ -26,7 +26,7 @@ public class TestBase {
         String login = credentials.login();
         String password = credentials.password();
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = format("https://%s:%s@selenoid.autotests.cloud/wd/hub/",login, password);
+        Configuration.remote = format("https://%s:%s@%s",login, password,System.getProperty("selenoid"));
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.startMaximized = true;
 
